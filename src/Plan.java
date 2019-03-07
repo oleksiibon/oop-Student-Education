@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Plan {
-    //List<Day> schedule = new ArrayList<>();
     Map<LocalDate, Day> schedule = new HashMap<>();
     List <Activity> activities = new ArrayList<>();
     private LocalDate todayDate = LocalDate.of(2019,3,7);
@@ -19,7 +18,7 @@ public class Plan {
         this.endDate = endDate;
         LocalDate currentDate = todayDate;
         while (endDate.isAfter(currentDate) || endDate.isEqual(currentDate)) {
-            schedule.put(currentDate, new Day());
+            schedule.put(currentDate, new Day(currentDate));
             currentDate = currentDate.plusDays(1);
         }
     }
@@ -31,7 +30,4 @@ public class Plan {
         return schedule;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
 }

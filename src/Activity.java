@@ -7,9 +7,9 @@ public class Activity {
     Education education;
     Visit visit;
 
-    public Activity(Education education, Visit condition) {
+    public Activity(Education education, Visit visit) {
         this.education = education;
-        this.visit = condition;
+        this.visit = visit;
     }
 
     public void addActivityToSchedule(Map<LocalDate,Day> schedule,  LocalDate endDate) {

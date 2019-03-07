@@ -1,4 +1,6 @@
+
 public interface Education {
 
-     Knowledge getKnowledgeFromEducation();
+    Knowledge getKnowledgeFromEducation();
+
 }

@@ -21,6 +21,7 @@ public class EducatePlanTest {
     private OneDayAWeekVisit visitOnFriday = new OneDayAWeekVisit(DayOfWeek.FRIDAY);
     private OneDayAMonthVisit visitEveryTenthDayOfMonth = new OneDayAMonthVisit(10);
     private MeetUp meetUp_50_50 = new MeetUp(new Knowledge(50, 50), "WorkShop");
+    ActivityWithTimeFrame university_30_50 = new ActivityWithTimeFrame(new University("ChNU", new Knowledge(30,50)), weekdayVisit, 2018,2025);
 
     @BeforeEach
     void setUp() {
@@ -124,5 +125,15 @@ public class EducatePlanTest {
         Knowledge knowledge = student.getKnowledge();
 
         assertThat(knowledge.practice, is(55.0));
+    }
+
+    @Test
+    void goToUniversity() {
+        plan.addActivity(university_30_50);
+        student.addSchedule(plan.getSchedule());
+        student.usePlan();
+        Knowledge knowledge = student.getKnowledge();
+
+        assertThat(knowledge.practice, is(70.0));
     }
 }
