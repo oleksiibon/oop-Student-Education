@@ -12,7 +12,7 @@ public class Activity {
         this.visit = visit;
     }
 
-    public void addActivityToSchedule(Map<LocalDate,Day> schedule,  LocalDate endDate) {
+    public void addActivityToSchedule(Map<LocalDate, Day> schedule, LocalDate endDate) {
         Predicate<LocalDate> predicate = visit.getPredicate();
         Set<LocalDate> mapKey = schedule.keySet();
         mapKey.stream()

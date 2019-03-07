@@ -12,14 +12,15 @@ public class ActivityWithTimeFrame extends Activity {
         this.endEducationDate = endEducationDate;
         this.startEducationDate = startEducationDate;
     }
+
     public ActivityWithTimeFrame(Education education, Visit visit, int startEducationYear, int endEducationYear) {
         super(education, visit);
-        this.endEducationDate = LocalDate.of(endEducationYear, 7,1);
+        this.endEducationDate = LocalDate.of(endEducationYear, 7, 1);
         this.startEducationDate = LocalDate.of(startEducationYear, 8, 30);
     }
 
     @Override
-    public void addActivityToSchedule(Map<LocalDate,Day> schedule, LocalDate endDate) {
+    public void addActivityToSchedule(Map<LocalDate, Day> schedule, LocalDate endDate) {
         Predicate<LocalDate> predicate = visit.getPredicate();
         Set<LocalDate> mapKey = schedule.keySet();
         mapKey.stream()

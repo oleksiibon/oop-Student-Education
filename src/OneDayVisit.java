@@ -8,7 +8,7 @@ public class OneDayVisit implements Visit {
         this.currentDate = currentDate;
     }
 
-    public Predicate <LocalDate> getPredicate() {
+    public Predicate<LocalDate> getPredicate() {
         return p -> p.isEqual(currentDate);
     }
 }

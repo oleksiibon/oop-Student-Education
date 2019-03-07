@@ -13,13 +13,13 @@ public class Student {
         this.name = name;
     }
 
-    public void addSchedule(Map <LocalDate, Day> schedule){
+    public void addSchedule(Map<LocalDate, Day> schedule) {
         this.schedule = schedule;
     }
 
     public void usePlan() {
         for (Day day : schedule.values()) {
-            for (Education education: day.getEducationList()) {
+            for (Education education : day.getEducationList()) {
                 addKnowledge(education.getKnowledgeFromEducation());
             }
         }
@@ -31,7 +31,7 @@ public class Student {
 
 
     public void addKnowledge(Knowledge knowledge) {
-        this.knowledge.practice += knowledge.practice*learnability;
-        this.knowledge.theoretical += knowledge.theoretical*learnability;
+        this.knowledge.practice += knowledge.practice;
+        this.knowledge.theoretical += knowledge.theoretical * learnability;
     }
 }

@@ -1,4 +1,4 @@
-public class MeetUp implements Education{
+public class MeetUp implements Education {
     Knowledge knowledge;
     String name;
 

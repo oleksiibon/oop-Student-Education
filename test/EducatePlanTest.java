@@ -14,14 +14,14 @@ public class EducatePlanTest {
     private Plan planForTwoMonth = new Plan(LocalDate.of(2019, 4, 12));
     private Student Lex_20_20 = new Student(new Knowledge(20, 20), 0.5, "Lex");
     private Map<LocalDate, Day> schedule;
-    private OneDayVisit oneDayCondition = new OneDayVisit(LocalDate.of(2019,3,10));
-    private OneDayVisit oneDayConditionNotInRange = new OneDayVisit(LocalDate.of(2119,3,10));
+    private OneDayVisit oneDayVisit = new OneDayVisit(LocalDate.of(2019, 3, 10));
+    private OneDayVisit oneDayVisitNotInRange = new OneDayVisit(LocalDate.of(2119, 3, 10));
     private Meeting meetingWithLex_20_20 = new Meeting(Lex_20_20);
     private WeekdayVisit weekdayVisit = new WeekdayVisit();
     private OneDayAWeekVisit visitOnFriday = new OneDayAWeekVisit(DayOfWeek.FRIDAY);
     private OneDayAMonthVisit visitEveryTenthDayOfMonth = new OneDayAMonthVisit(10);
     private MeetUp meetUp_50_50 = new MeetUp(new Knowledge(50, 50), "WorkShop");
-    ActivityWithTimeFrame university_30_50 = new ActivityWithTimeFrame(new University("ChNU", new Knowledge(30,50)), weekdayVisit, 2018,2025);
+    ActivityWithTimeFrame university_30_50 = new ActivityWithTimeFrame(new Organization("ChNU", new Knowledge(30, 50)), weekdayVisit, 2018, 2025);
 
     @BeforeEach
     void setUp() {
@@ -33,13 +33,13 @@ public class EducatePlanTest {
 //        List <Education> educationList = new ArrayList<>();
 //        educationList.add(new Education(new Knowledge(50,50)));
 //        schedule.add(new Day(educationList));
-        plan.addActivity(new Activity(meetUp_50_50, oneDayCondition));
+        plan.addActivity(new Activity(meetUp_50_50, oneDayVisit));
         schedule = plan.getSchedule();
         student.addSchedule(schedule);
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(35.0));
+        assertThat(knowledge.theoretical, is(35.0));
     }
 
     @Test
@@ -50,29 +50,31 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(70.0));
+        assertThat(knowledge.theoretical, is(70.0));
     }
 
     @Test
     void goToMeetingWithOtherStudent__whenThisMeetingWillBeOnce() {
-        plan.addActivity(new Activity(meetingWithLex_20_20, oneDayCondition));
+        plan.addActivity(new Activity(meetingWithLex_20_20, oneDayVisit));
         schedule = plan.getSchedule();
         student.addSchedule(schedule);
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(20.0));
+        assertThat(knowledge.theoretical, is(20.0));
     }
+
     @Test
     void goToMeetingWithOtherStudent__whenThisMeetingWillBeOnce__andNotInRangePlan() {
-        plan.addActivity(new Activity(meetingWithLex_20_20, oneDayConditionNotInRange));
+        plan.addActivity(new Activity(meetingWithLex_20_20, oneDayVisitNotInRange));
         schedule = plan.getSchedule();
         student.addSchedule(schedule);
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(10.0));
+        assertThat(knowledge.theoretical, is(10.0));
     }
+
     @Test
     void goToMeetingWithOtherStudent__whenThisMeetingWillBeEveryWeekDay() {
         plan.addActivity(new Activity(meetingWithLex_20_20, weekdayVisit));
@@ -81,8 +83,9 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(50.0));
+        assertThat(knowledge.theoretical, is(50.0));
     }
+
     @Test
     void goToMeetingWithOtherStudent__whenThisMeetingWillBeOneDayInWeek() {
         plan.addActivity(new Activity(meetingWithLex_20_20, visitOnFriday));
@@ -91,7 +94,7 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(20.0));
+        assertThat(knowledge.theoretical, is(20.0));
     }
 
     @Test
@@ -102,29 +105,29 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(30.0));
+        assertThat(knowledge.theoretical, is(30.0));
     }
 
     @Test
     void selfEducationEveryDay() {
-        plan.addActivity(new Activity(new SelfEducation("Read Book", new Knowledge(1,8)), new EverydayVisit()));
+        plan.addActivity(new Activity(new SelfEducation("Read Book", new Knowledge(1, 8)), new EverydayVisit()));
         schedule = plan.getSchedule();
         student.addSchedule(schedule);
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
-        assertThat(knowledge.practice, is(13.0));
+        assertThat(knowledge.practice, is(16.0));
     }
 
     @Test
     void goToMeetingWithOtherStudent__whenThisMeetingWillBeOneDayInMonth__goToOneMeetUp() {
         planForTwoMonth.addActivity(new Activity(meetingWithLex_20_20, visitEveryTenthDayOfMonth));
-        planForTwoMonth.addActivity(new Activity(meetUp_50_50, oneDayCondition));
+        planForTwoMonth.addActivity(new Activity(meetUp_50_50, oneDayVisit));
         schedule = planForTwoMonth.getSchedule();
         student.addSchedule(schedule);
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(55.0));
+        assertThat(knowledge.theoretical, is(55.0));
     }
 
     @Test
@@ -134,6 +137,17 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(70.0));
+        assertThat(knowledge.theoretical, is(110.0));
+    }
+
+    @Test
+    void goToUniversityAndOneMeenUp() {
+        plan.addActivity(university_30_50);
+        plan.addActivity(new Activity(meetUp_50_50, oneDayVisit));
+        student.addSchedule(plan.getSchedule());
+        student.usePlan();
+        Knowledge knowledge = student.getKnowledge();
+
+        assertThat(knowledge.theoretical, is(135.0));
     }
 }

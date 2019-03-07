@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class Plan {
     Map<LocalDate, Day> schedule = new HashMap<>();
-    List <Activity> activities = new ArrayList<>();
-    private LocalDate todayDate = LocalDate.of(2019,3,7);
+    List<Activity> activities = new ArrayList<>();
+    private LocalDate todayDate = LocalDate.of(2019, 3, 7);
     private LocalDate endDate;
 
     public void addActivity(Activity activity) {

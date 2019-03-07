@@ -1,5 +1,6 @@
-public class Meeting implements  Education {
+public class Meeting implements Education {
     Knowledge knowledge;
+
     public Meeting(Student student) {
         this.knowledge = student.getKnowledge();
     }
