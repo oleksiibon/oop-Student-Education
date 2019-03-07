@@ -1,8 +1,8 @@
 public class Knowledge {
-    int practice;
-    int theoretical;
+    double practice;
+    double theoretical;
 
-    public Knowledge(int practice, int theoretical) {
+    public Knowledge(double practice, double theoretical) {
         this.practice = practice;
         this.theoretical = theoretical;
     }

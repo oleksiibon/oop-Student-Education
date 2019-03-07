@@ -20,6 +20,7 @@ public class EducatePlanTest {
     private WeekdayVisit weekdayVisit = new WeekdayVisit();
     private OneDayAWeekVisit visitOnFriday = new OneDayAWeekVisit(DayOfWeek.FRIDAY);
     private OneDayAMonthVisit visitEveryTenthDayOfMonth = new OneDayAMonthVisit(10);
+    private MeetUp meetUp_50_50 = new MeetUp(new Knowledge(50, 50), "WorkShop");
 
     @BeforeEach
     void setUp() {
@@ -31,13 +32,13 @@ public class EducatePlanTest {
 //        List <Education> educationList = new ArrayList<>();
 //        educationList.add(new Education(new Knowledge(50,50)));
 //        schedule.add(new Day(educationList));
-        plan.addActivity(new Activity(new MeetUp(new Knowledge(50, 50), "WorkShop"), oneDayCondition));
+        plan.addActivity(new Activity(meetUp_50_50, oneDayCondition));
         schedule = plan.getSchedule();
         student.addSchedule(schedule);
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(35));
+        assertThat(knowledge.practice, is(35.0));
     }
 
     @Test
@@ -48,7 +49,7 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(70));
+        assertThat(knowledge.practice, is(70.0));
     }
 
     @Test
@@ -59,7 +60,7 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(20));
+        assertThat(knowledge.practice, is(20.0));
     }
     @Test
     void goToMeetingWithOtherStudent__whenThisMeetingWillBeOnce__andNotInRangePlan() {
@@ -69,7 +70,7 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(10));
+        assertThat(knowledge.practice, is(10.0));
     }
     @Test
     void goToMeetingWithOtherStudent__whenThisMeetingWillBeEveryWeekDay() {
@@ -79,7 +80,7 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(50));
+        assertThat(knowledge.practice, is(50.0));
     }
     @Test
     void goToMeetingWithOtherStudent__whenThisMeetingWillBeOneDayInWeek() {
@@ -89,7 +90,7 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(20));
+        assertThat(knowledge.practice, is(20.0));
     }
 
     @Test
@@ -100,6 +101,28 @@ public class EducatePlanTest {
         student.usePlan();
         Knowledge knowledge = student.getKnowledge();
 
-        assertThat(knowledge.practice, is(30));
+        assertThat(knowledge.practice, is(30.0));
+    }
+
+    @Test
+    void selfEducationEveryDay() {
+        plan.addActivity(new Activity(new SelfEducation("Read Book", new Knowledge(1,8)), new EverydayVisit()));
+        schedule = plan.getSchedule();
+        student.addSchedule(schedule);
+        student.usePlan();
+        Knowledge knowledge = student.getKnowledge();
+        assertThat(knowledge.practice, is(13.0));
+    }
+
+    @Test
+    void goToMeetingWithOtherStudent__whenThisMeetingWillBeOneDayInMonth__goToOneMeetUp() {
+        planForTwoMonth.addActivity(new Activity(meetingWithLex_20_20, visitEveryTenthDayOfMonth));
+        planForTwoMonth.addActivity(new Activity(meetUp_50_50, oneDayCondition));
+        schedule = planForTwoMonth.getSchedule();
+        student.addSchedule(schedule);
+        student.usePlan();
+        Knowledge knowledge = student.getKnowledge();
+
+        assertThat(knowledge.practice, is(55.0));
     }
 }
