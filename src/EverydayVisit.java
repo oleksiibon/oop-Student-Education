@@ -1,12 +1,10 @@
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.function.Predicate;
 
 public class EverydayVisit implements Visit {
 
     @Override
-    public void addEducation(Education education, Map<LocalDate, Day> schedule, LocalDate endDate) {
-        for (Day day : schedule.values()) {
-            day.addEducation(education);
-        }
+    public Predicate<LocalDate> getPredicate() {
+        return p -> true;
     }
 }

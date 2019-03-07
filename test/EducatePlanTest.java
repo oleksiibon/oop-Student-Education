@@ -9,15 +9,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class EducatePlanTest {
-    Student student = new Student(new Knowledge(10, 10), 0.5, "Vova");
-    Plan plan = new Plan(LocalDate.of(2019, 3, 12));
-    Student Lex_20_20 = new Student(new Knowledge(20, 20), 0.5, "Lex");
-    Map<LocalDate, Day> schedule;
-    OneDayVisit oneDayCondition = new OneDayVisit(LocalDate.of(2019,3,10));
-    OneDayVisit oneDayConditionNotInRange = new OneDayVisit(LocalDate.of(2119,3,10));
-    Meeting meetingWithLex_20_20 = new Meeting(Lex_20_20);
-    WeekdayVisit weekdayVisit = new WeekdayVisit();
-    OneDayAWeekVisit visitOnFriday = new OneDayAWeekVisit(DayOfWeek.FRIDAY);
+    private Student student = new Student(new Knowledge(10, 10), 0.5, "Vova");
+    private Plan plan = new Plan(LocalDate.of(2019, 3, 12));
+    private Plan planForTwoMonth = new Plan(LocalDate.of(2019, 4, 12));
+    private Student Lex_20_20 = new Student(new Knowledge(20, 20), 0.5, "Lex");
+    private Map<LocalDate, Day> schedule;
+    private OneDayVisit oneDayCondition = new OneDayVisit(LocalDate.of(2019,3,10));
+    private OneDayVisit oneDayConditionNotInRange = new OneDayVisit(LocalDate.of(2119,3,10));
+    private Meeting meetingWithLex_20_20 = new Meeting(Lex_20_20);
+    private WeekdayVisit weekdayVisit = new WeekdayVisit();
+    private OneDayAWeekVisit visitOnFriday = new OneDayAWeekVisit(DayOfWeek.FRIDAY);
+    private OneDayAMonthVisit visitEveryTenthDayOfMonth = new OneDayAMonthVisit(10);
 
     @BeforeEach
     void setUp() {
@@ -29,7 +31,7 @@ public class EducatePlanTest {
 //        List <Education> educationList = new ArrayList<>();
 //        educationList.add(new Education(new Knowledge(50,50)));
 //        schedule.add(new Day(educationList));
-        plan.addActivity(new Activity(new MeetUp(new Knowledge(50, 50)), oneDayCondition));
+        plan.addActivity(new Activity(new MeetUp(new Knowledge(50, 50), "WorkShop"), oneDayCondition));
         schedule = plan.getSchedule();
         student.addSchedule(schedule);
         student.usePlan();
@@ -80,7 +82,7 @@ public class EducatePlanTest {
         assertThat(knowledge.practice, is(50));
     }
     @Test
-    void goToMeetingWithOtherStudent__whenThisMeetingWillBeOneDayInWeekDay() {
+    void goToMeetingWithOtherStudent__whenThisMeetingWillBeOneDayInWeek() {
         plan.addActivity(new Activity(meetingWithLex_20_20, visitOnFriday));
         schedule = plan.getSchedule();
         student.addSchedule(schedule);
@@ -88,5 +90,16 @@ public class EducatePlanTest {
         Knowledge knowledge = student.getKnowledge();
 
         assertThat(knowledge.practice, is(20));
+    }
+
+    @Test
+    void goToMeetingWithOtherStudent__whenThisMeetingWillBeOneDayInMonth() {
+        planForTwoMonth.addActivity(new Activity(meetingWithLex_20_20, visitEveryTenthDayOfMonth));
+        schedule = planForTwoMonth.getSchedule();
+        student.addSchedule(schedule);
+        student.usePlan();
+        Knowledge knowledge = student.getKnowledge();
+
+        assertThat(knowledge.practice, is(30));
     }
 }
